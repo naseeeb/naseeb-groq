@@ -52,6 +52,9 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center; /* Center content vertically */
+      text-align: center; /* Center content horizontally */
+      height: 100%;
     }
 
     .message-wrapper {
@@ -142,16 +145,25 @@
       background-color: #ccc;
       border-radius: 3px;
     }
+
+    .greeting {
+      font-size: 2.5rem; /* Larger font size for greeting */
+      color: #000;
+      opacity: 0.7;
+      transition: opacity 0.3s ease-in-out;
+    }
+
   </style>
 </head>
 <body>
 
   <header>
     <div class="model-info">Groq (Running on LLaMA 3)</div>
-
   </header>
 
-  <div id="chat-container"></div>
+  <div id="chat-container">
+    <div class="greeting" id="greeting-message">What can I help with?</div>
+  </div>
 
   <div id="input-area">
     <div class="input-wrapper">
@@ -162,6 +174,7 @@
 
   <script>
     const chatContainer = document.getElementById('chat-container');
+    const greetingMessage = document.getElementById('greeting-message');
 
     function addMessage(text, sender, isTyping = false) {
       const wrapper = document.createElement('div');
@@ -187,6 +200,9 @@
       const question = input.value.trim();
       if (!question) return;
 
+      // Hide the greeting message once the user starts typing
+      greetingMessage.style.opacity = '0';
+
       addMessage(question, 'user');
       input.value = '';
 
@@ -206,6 +222,13 @@
         typingEl.classList.remove('typing');
         typingEl.textContent = "Error: " + err.message;
       }
+    }
+
+    // Display the greeting message when the page loads
+    window.onload = function() {
+      setTimeout(() => {
+        greetingMessage.style.opacity = '1'; // Ensures the greeting is visible
+      }, 200); // Allow a slight delay for smooth rendering
     }
   </script>
 </body>
